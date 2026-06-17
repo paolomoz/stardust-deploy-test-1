@@ -1,0 +1,150 @@
+/* featured-beer — 3-up commerce strip. Lifted from [data-section="featured-beer"]. */
+.featured-beer {
+  padding: 80px var(--section-pad-desktop);
+  background: var(--brand-black);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.featured-beer .wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+
+.featured-beer .featured-eyebrow {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brand-yellow);
+  margin: 0 0 var(--space-md);
+}
+
+.featured-beer .featured-h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--surface-white);
+  margin: 0 0 var(--space-2xl);
+  max-width: 50ch;
+}
+
+.featured-beer .card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--hairline);
+  margin-bottom: var(--space-2xl);
+}
+
+.featured-beer .card {
+  background: var(--brand-black);
+  color: var(--surface-white);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  position: relative;
+  outline: 0 solid transparent;
+  transition: outline var(--dur-state) var(--ease-snap);
+}
+
+.featured-beer .card:hover {
+  outline: 4px solid var(--brand-yellow);
+  outline-offset: 0;
+}
+
+.featured-beer .card-badge {
+  background: var(--brand-yellow);
+  color: var(--brand-black);
+  padding: 4px 10px;
+  align-self: flex-start;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.featured-beer .card-name {
+  font-family: var(--hero);
+  font-weight: 400;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--surface-white);
+}
+
+.featured-beer .card-photo-wrap {
+  aspect-ratio: 4 / 5;
+  background: var(--text-near-black);
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-beer .card-photo,
+.featured-beer .card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.featured-beer .card-style {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--neutral-grey);
+  margin: 0;
+}
+
+.featured-beer .card-readmore {
+  display: inline-block;
+  margin-top: var(--space-sm);
+  align-self: flex-start;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-yellow);
+  border-bottom: 2px solid var(--brand-yellow);
+  padding: var(--space-sm) 0 6px;
+  min-height: 44px;
+  transition: color var(--dur-state) var(--ease-snap), border-color var(--dur-state) var(--ease-snap);
+}
+
+.featured-beer .card-readmore:hover {
+  color: var(--surface-white);
+  border-bottom-color: var(--surface-white);
+}
+
+.featured-beer .strip-foot {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.featured-beer .strip-foot-link {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--surface-white);
+  border-bottom: 2px solid var(--brand-yellow);
+  padding-bottom: 4px;
+  transition: color var(--dur-state) var(--ease-snap);
+}
+
+.featured-beer .strip-foot-link:hover { color: var(--brand-yellow); }
+
+@media (width <= 1023px) {
+  .featured-beer .card-grid { grid-template-columns: 1fr; }
+}

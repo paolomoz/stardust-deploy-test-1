@@ -1,0 +1,119 @@
+<style>
+  /* Footer chrome — lifted from the prototype [data-section="footer"], scoped
+     under footer.footer (postlcp.js sets the host class). */
+  footer.footer {
+    display: block;
+    padding: 64px var(--section-pad-desktop) 32px;
+    background: var(--brand-black);
+    border-top: 1px solid var(--hairline);
+  }
+
+  footer.footer .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2xl);
+    margin-bottom: 64px;
+    max-width: var(--maxw);
+    margin-inline: auto;
+  }
+
+  footer.footer .footer-col h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--brand-yellow);
+    margin: 0 0 var(--space-md);
+  }
+
+  footer.footer .footer-col ul { list-style: none; padding: 0; margin: 0; }
+
+  footer.footer .footer-col li { margin-bottom: var(--space-sm); }
+
+  footer.footer .footer-col a {
+    font-family: var(--body);
+    font-size: 0.875rem;
+    color: var(--surface-white);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur-state) var(--ease-snap);
+  }
+
+  footer.footer .footer-col a:hover { border-bottom-color: var(--brand-yellow); }
+
+  footer.footer .footer-bottom {
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+    font-family: var(--body);
+    font-size: 0.75rem;
+    color: var(--neutral-grey);
+    letter-spacing: 0.04em;
+    max-width: var(--maxw);
+    margin-inline: auto;
+  }
+
+  footer.footer .est-mark {
+    color: var(--brand-yellow);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  footer.footer .footer-inquiry a {
+    color: var(--surface-white);
+    border-bottom: 1px solid var(--hairline);
+    transition: border-color var(--dur-state) var(--ease-snap);
+  }
+
+  footer.footer .footer-inquiry a:hover { border-bottom-color: var(--brand-yellow); }
+
+  @media (max-width: 1023px) {
+    footer.footer .footer-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-xl); }
+  }
+
+  @media (max-width: 640px) {
+    footer.footer { padding-inline: var(--section-pad-mobile); }
+    footer.footer .footer-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+    footer.footer .footer-bottom { flex-direction: column; align-items: flex-start; gap: var(--space-sm); }
+  }
+</style>
+
+<div class="footer-grid">
+  <div class="footer-col">
+    <h3>The Brewery</h3>
+    <ul>
+      <li><a href="/the-brewery">Our story</a></li>
+      <li><a href="/the-brewery#the-people">The brewers</a></li>
+      <li><a href="/the-brewery#the-place">The Wasatch Back</a></li>
+      <li><a href="/">Press</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h3>Taprooms</h3>
+    <ul>
+      <li><a href="/taprooms#heber-valley">Heber Valley</a></li>
+      <li><a href="/taprooms#park-city">Park City</a></li>
+      <li><a href="/taprooms#hours">Hours</a></li>
+      <li><a href="/">Private events</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h3>The Beer</h3>
+    <ul>
+      <li><a href="/beers">The lineup</a></li>
+      <li><a href="/beers#year-round">Year-round</a></li>
+      <li><a href="/beers#seasonal">Seasonal</a></li>
+      <li><a href="/beers#powder-day">Powder Day 2026</a></li>
+    </ul>
+  </div>
+</div>
+<div class="footer-bottom">
+  <span>© 2026 Wasatch Back Beerworks LLC. All rights reserved.</span>
+  <span class="footer-inquiry">Inquiries: <a href="mailto:hello@wasatchback.beer">hello@wasatchback.beer</a></span>
+  <span class="est-mark">Est 1996 · Heber Valley, Utah</span>
+</div>

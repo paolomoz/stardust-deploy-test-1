@@ -1,0 +1,220 @@
+<style>
+  /* Header chrome — lifted from the prototype eyebrow-banner + header nav.
+     Injected verbatim into header.header by postlcp.js (no JS runs here, so the
+     mobile menu is a CSS-only :checked toggle; the prototype's Escape/auto-close
+     JS is intentionally dropped). */
+  header.header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: block;
+  }
+
+  header.header .eyebrow-banner {
+    background: var(--brand-yellow);
+    color: var(--brand-black);
+    padding: 8px var(--section-pad-desktop);
+    text-align: center;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(0.875rem, 1.2vw, 1rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  header.header .topnav {
+    position: relative;
+    background: linear-gradient(to bottom, rgb(0 0 0 / 92%) 0%, rgb(0 0 0 / 78%) 100%);
+    color: var(--surface-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px var(--section-pad-desktop);
+  }
+
+  header.header .wordmark {
+    color: var(--surface-white);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  header.header .est { color: var(--brand-yellow); font-size: 0.6875rem; letter-spacing: 0.16em; }
+
+  header.header .nav { display: flex; gap: 28px; align-items: center; }
+
+  header.header .nav a {
+    color: var(--surface-white);
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+    transition: border-color var(--dur-state) var(--ease-snap);
+  }
+
+  header.header .nav a:hover,
+  header.header .nav a[aria-current="page"] { border-bottom-color: var(--brand-yellow); }
+
+  /* CSS-only mobile nav toggle */
+  header.header .nav-toggle {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    white-space: nowrap;
+  }
+
+  header.header .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  header.header .nav-burger {
+    display: none;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  header.header .nav-toggle:focus-visible ~ .nav-burger {
+    outline: 2px solid var(--brand-yellow);
+    outline-offset: 2px;
+  }
+
+  header.header .nav-burger-icon,
+  header.header .nav-burger-icon::before,
+  header.header .nav-burger-icon::after {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--surface-white);
+    transition: transform var(--dur-state) var(--ease-snap), background var(--dur-state) var(--ease-snap);
+  }
+
+  header.header .nav-burger-icon { position: relative; }
+
+  header.header .nav-burger-icon::before,
+  header.header .nav-burger-icon::after { content: ''; position: absolute; left: 0; }
+
+  header.header .nav-burger-icon::before { transform: translateY(-7px); }
+
+  header.header .nav-burger-icon::after { transform: translateY(7px); }
+
+  header.header .nav-toggle:checked ~ .nav-burger .nav-burger-icon { background: transparent; }
+
+  header.header .nav-toggle:checked ~ .nav-burger .nav-burger-icon::before {
+    transform: translateY(0) rotate(45deg);
+    background: var(--brand-yellow);
+  }
+
+  header.header .nav-toggle:checked ~ .nav-burger .nav-burger-icon::after {
+    transform: translateY(0) rotate(-45deg);
+    background: var(--brand-yellow);
+  }
+
+  @media (max-width: 640px) {
+    header.header .topnav { padding: 12px var(--section-pad-mobile); gap: var(--space-md); }
+    header.header .wordmark { flex-shrink: 0; font-size: 1rem; gap: 8px; }
+    header.header .est { font-size: 0.625rem; letter-spacing: 0.14em; }
+    header.header .nav-burger { display: inline-flex; }
+
+    header.header .nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--brand-black);
+      border-top: 1px solid var(--hairline);
+      border-bottom: 4px solid var(--brand-yellow);
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: var(--space-sm) var(--section-pad-mobile) var(--space-lg);
+      transform: translateY(-12px);
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition:
+        transform var(--dur-state) var(--ease-snap),
+        opacity var(--dur-state) var(--ease-snap),
+        visibility 0s linear var(--dur-state);
+    }
+
+    header.header .nav-toggle:checked ~ .nav {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+      transition:
+        transform var(--dur-state) var(--ease-snap),
+        opacity var(--dur-state) var(--ease-snap),
+        visibility 0s linear 0s;
+    }
+
+    header.header .nav a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: var(--space-md) 0;
+      font-family: var(--display);
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    header.header .nav a:last-child { border-bottom: 0; }
+  }
+</style>
+
+<div class="eyebrow-banner" role="region" aria-label="Site-wide promotional banner">
+  Powder Day 2026 IPA pouring now at both taprooms · Heber + Park City
+</div>
+
+<nav class="topnav" aria-label="Primary">
+  <a class="wordmark" href="/" aria-label="Wasatch Back Beerworks, established 1996">
+    Wasatch Back <span class="est">Est 1996</span>
+  </a>
+
+  <input class="nav-toggle" type="checkbox" id="nav-toggle">
+  <label class="nav-burger" for="nav-toggle" aria-controls="nav-list">
+    <span class="nav-burger-icon" aria-hidden="true"></span>
+    <span class="sr-only">Menu</span>
+  </label>
+
+  <div class="nav" id="nav-list">
+    <a href="/" aria-current="page">Home</a>
+    <a href="/beers">Beers</a>
+    <a href="/the-brewery">The Brewery</a>
+    <a href="/taprooms">Taprooms</a>
+  </div>
+</nav>

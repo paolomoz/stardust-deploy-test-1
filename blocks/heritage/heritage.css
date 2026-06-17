@@ -1,0 +1,88 @@
+/* heritage — editorial 2-col spread. Lifted from [data-section="heritage"]. */
+.heritage {
+  background: var(--brand-black);
+  padding: 96px var(--section-pad-desktop);
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
+  gap: var(--section-pad-desktop);
+  align-items: center;
+  border-block: 1px solid var(--hairline);
+}
+
+.heritage .heritage-photo {
+  margin: 0;
+  aspect-ratio: 16 / 11;
+  overflow: hidden;
+}
+
+.heritage .heritage-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.heritage .heritage-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.heritage .heritage-eyebrow {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brand-yellow);
+  margin: 0;
+}
+
+.heritage .heritage-year {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(6rem, 14vw, 11rem);
+  line-height: 0.85;
+  letter-spacing: 0;
+  color: var(--surface-white);
+  margin: 0;
+}
+
+.heritage .heritage-prose {
+  font-family: var(--body);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--neutral-grey);
+  max-width: 60ch;
+}
+
+.heritage .heritage-prose p {
+  margin: 0;
+  border-top: 1px solid var(--brand-yellow);
+  border-bottom: 1px solid var(--brand-yellow);
+  padding: var(--space-md);
+  background: rgb(239 208 36 / 6%);
+}
+
+.heritage .heritage-prose p::before {
+  content: "PLACEHOLDER · BREWERY ORIGIN PROSE";
+  display: block;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-yellow);
+  margin-bottom: var(--space-sm);
+}
+
+/* Ghost CTA sits left-aligned (secondary button already styled globally). */
+.heritage .heritage-text a.btn { align-self: flex-start; }
+
+@media (width <= 1023px) {
+  .heritage {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
