@@ -1,21 +1,27 @@
 /**
  * the-place — full-bleed photo with a bottom overlay and a corner tag.
  *
- * Authoring (query-based; the corner tag is the short link-free <p> before the
- * heading, the body is the link-free <p> after it):
- *   - one cell with a <picture>/<img>  (landscape background)
- *   - tag text   (short link-free <p>, e.g. "Est 1996")
- *   - <h2> headline
- *   - body <p>
- *   - a plain text link <a> (NOT a button — left plain, styled per-block)
+ * Authoring (one cell each, in order): photo | tag | <h2> | body | text link.
+ * Read by CELL, not by <p> (the pipeline strips <p> from single-text cells, #50/#62).
+ * The text link is a plain <a> (not a button) — left plain, styled per-block.
  */
 export default function decorate(block) {
-  const media = block.querySelector('picture, img');
-  const heading = block.querySelector('h2, h3');
-  // Query the link directly — its <p> may have been unwrapped by the pipeline.
-  const link = block.querySelector('a');
-  const textParas = [...block.querySelectorAll('p')].filter((p) => !p.querySelector('a'));
-  const [tag, body] = textParas;
+  const cells = [...block.querySelectorAll(':scope > div > div')];
+  let media;
+  let heading;
+  let link;
+  const texts = [];
+
+  cells.forEach((cell) => {
+    const pic = cell.querySelector('picture, img');
+    const h = cell.querySelector('h2, h3');
+    const a = cell.querySelector('a');
+    if (pic) media = pic;
+    else if (h) heading = h;
+    else if (a) link = a;
+    else if (cell.textContent.trim()) texts.push(cell.textContent.trim());
+  });
+  const [tag, body] = texts;
 
   const frag = document.createDocumentFragment();
 
@@ -31,7 +37,7 @@ export default function decorate(block) {
   if (tag) {
     const tagEl = document.createElement('span');
     tagEl.className = 'the-place-tag';
-    tagEl.textContent = tag.textContent.trim();
+    tagEl.textContent = tag;
     frag.append(tagEl);
   }
 
@@ -42,8 +48,10 @@ export default function decorate(block) {
     overlay.append(heading);
   }
   if (body) {
-    body.classList.add('the-place-body');
-    overlay.append(body);
+    const p = document.createElement('p');
+    p.className = 'the-place-body';
+    p.textContent = body;
+    overlay.append(p);
   }
   if (link) {
     link.classList.add('the-place-link');

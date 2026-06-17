@@ -2,36 +2,50 @@
  * hero — full-bleed photo brand statement with a bottom-left overlay.
  * This is the LCP block and owns the page's single <h1>.
  *
- * Authoring (query-based, order within the overlay is eyebrow -> h1 -> subhead):
- *   - one cell with a <picture>/<img>  (background photo)
- *   - eyebrow text  (short, link-free <p>, before the heading)
- *   - <h1> headline
- *   - subhead text  (link-free <p>, after the heading)
- *   - CTA row: <strong><a> primary (decorated to .btn.btn-primary by ak.js)
+ * Authoring (one cell each, in order): photo | eyebrow | <h1> | subhead | CTA.
+ * Read by CELL, not by <p>: the delivery pipeline strips the <p> wrapper from
+ * single-text cells, leaving bare text in the cell <div> (#50/#62).
  */
+function cellText(cell) {
+  return cell.textContent.trim();
+}
+
 export default function decorate(block) {
-  const media = block.querySelector('picture, img');
-  const heading = block.querySelector('h1, h2');
-  // The delivery pipeline unwraps the <p> around a button paragraph, so the CTA
-  // anchor may NOT live inside a <p> — query it directly rather than via paras.
-  const ctaAnchor = block.querySelector('a');
-  const textParas = [...block.querySelectorAll('p')].filter((p) => !p.querySelector('a'));
-  const [eyebrow, subhead] = textParas;
+  const cells = [...block.querySelectorAll(':scope > div > div')];
+  let media;
+  let heading;
+  let ctaAnchor;
+  const texts = [];
+
+  cells.forEach((cell) => {
+    const pic = cell.querySelector('picture, img');
+    const h = cell.querySelector('h1, h2');
+    const a = cell.querySelector('a');
+    if (pic) media = pic;
+    else if (h) heading = h;
+    else if (a) ctaAnchor = a;
+    else if (cellText(cell)) texts.push(cellText(cell));
+  });
+  const [eyebrow, subhead] = texts;
 
   const overlay = document.createElement('div');
   overlay.className = 'hero-overlay';
 
   if (eyebrow) {
-    eyebrow.classList.add('hero-eyebrow');
-    overlay.append(eyebrow);
+    const p = document.createElement('p');
+    p.className = 'hero-eyebrow';
+    p.textContent = eyebrow;
+    overlay.append(p);
   }
   if (heading) {
     heading.classList.add('hero-h1');
     overlay.append(heading);
   }
   if (subhead) {
-    subhead.classList.add('hero-subhead');
-    overlay.append(subhead);
+    const p = document.createElement('p');
+    p.className = 'hero-subhead';
+    p.textContent = subhead;
+    overlay.append(p);
   }
   if (ctaAnchor) {
     const ctaRow = document.createElement('p');

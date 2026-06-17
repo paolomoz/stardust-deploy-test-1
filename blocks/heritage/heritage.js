@@ -2,20 +2,26 @@
  * heritage — editorial 2-column spread: archival photo + heritage text
  * (eyebrow, founding year, origin prose, ghost CTA).
  *
- * Authoring (query-based):
- *   - one cell with a <picture>/<img>  (archival photo)
- *   - eyebrow text  (short link-free <p>, before the heading)
- *   - <h2> the founding year (e.g. 1996)
- *   - prose <p>  (link-free, after the heading)
- *   - CTA: <em><a> secondary (decorated to .btn.btn-secondary by ak.js)
+ * Authoring (one cell each, in order): photo | eyebrow | <h2>year | prose | CTA.
+ * Read by CELL, not by <p> (the pipeline strips <p> from single-text cells, #50/#62).
  */
 export default function decorate(block) {
-  const media = block.querySelector('picture, img');
-  const heading = block.querySelector('h2, h3');
-  // CTA anchor may not be inside a <p> (pipeline unwraps button paragraphs).
-  const ctaAnchor = block.querySelector('a');
-  const textParas = [...block.querySelectorAll('p')].filter((p) => !p.querySelector('a'));
-  const [eyebrow, prose] = textParas;
+  const cells = [...block.querySelectorAll(':scope > div > div')];
+  let media;
+  let heading;
+  let ctaAnchor;
+  const texts = [];
+
+  cells.forEach((cell) => {
+    const pic = cell.querySelector('picture, img');
+    const h = cell.querySelector('h2, h3');
+    const a = cell.querySelector('a');
+    if (pic) media = pic;
+    else if (h) heading = h;
+    else if (a) ctaAnchor = a;
+    else if (cell.textContent.trim()) texts.push(cell.textContent.trim());
+  });
+  const [eyebrow, prose] = texts;
 
   const figure = document.createElement('figure');
   figure.className = 'heritage-photo';
@@ -25,8 +31,10 @@ export default function decorate(block) {
   text.className = 'heritage-text';
 
   if (eyebrow) {
-    eyebrow.classList.add('heritage-eyebrow');
-    text.append(eyebrow);
+    const p = document.createElement('p');
+    p.className = 'heritage-eyebrow';
+    p.textContent = eyebrow;
+    text.append(p);
   }
   if (heading) {
     heading.classList.add('heritage-year');
@@ -35,8 +43,10 @@ export default function decorate(block) {
   if (prose) {
     const proseWrap = document.createElement('div');
     proseWrap.className = 'heritage-prose';
+    const p = document.createElement('p');
+    p.textContent = prose;
+    proseWrap.append(p);
     text.append(proseWrap);
-    proseWrap.append(prose);
   }
   if (ctaAnchor) {
     const ctaRow = document.createElement('p');
