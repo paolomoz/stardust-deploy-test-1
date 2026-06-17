@@ -12,9 +12,9 @@
 export default function decorate(block) {
   const media = block.querySelector('picture, img');
   const heading = block.querySelector('h2, h3');
-  const paras = [...block.querySelectorAll('p')];
-  const ctaPara = paras.find((p) => p.querySelector('a'));
-  const textParas = paras.filter((p) => !p.querySelector('a'));
+  // CTA anchor may not be inside a <p> (pipeline unwraps button paragraphs).
+  const ctaAnchor = block.querySelector('a');
+  const textParas = [...block.querySelectorAll('p')].filter((p) => !p.querySelector('a'));
   const [eyebrow, prose] = textParas;
 
   const figure = document.createElement('figure');
@@ -38,7 +38,11 @@ export default function decorate(block) {
     text.append(proseWrap);
     proseWrap.append(prose);
   }
-  if (ctaPara) text.append(ctaPara);
+  if (ctaAnchor) {
+    const ctaRow = document.createElement('p');
+    ctaRow.append(ctaAnchor.closest('strong, em, del') || ctaAnchor);
+    text.append(ctaRow);
+  }
 
   block.replaceChildren(figure, text);
 }

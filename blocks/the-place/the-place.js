@@ -12,9 +12,9 @@
 export default function decorate(block) {
   const media = block.querySelector('picture, img');
   const heading = block.querySelector('h2, h3');
-  const paras = [...block.querySelectorAll('p')];
-  const linkPara = paras.find((p) => p.querySelector('a'));
-  const textParas = paras.filter((p) => !p.querySelector('a'));
+  // Query the link directly — its <p> may have been unwrapped by the pipeline.
+  const link = block.querySelector('a');
+  const textParas = [...block.querySelectorAll('p')].filter((p) => !p.querySelector('a'));
   const [tag, body] = textParas;
 
   const frag = document.createDocumentFragment();
@@ -45,8 +45,7 @@ export default function decorate(block) {
     body.classList.add('the-place-body');
     overlay.append(body);
   }
-  if (linkPara) {
-    const link = linkPara.querySelector('a');
+  if (link) {
     link.classList.add('the-place-link');
     overlay.append(link);
   }

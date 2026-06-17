@@ -12,9 +12,10 @@
 export default function decorate(block) {
   const media = block.querySelector('picture, img');
   const heading = block.querySelector('h1, h2');
-  const paras = [...block.querySelectorAll('p')];
-  const ctaPara = paras.find((p) => p.querySelector('a'));
-  const textParas = paras.filter((p) => !p.querySelector('a'));
+  // The delivery pipeline unwraps the <p> around a button paragraph, so the CTA
+  // anchor may NOT live inside a <p> — query it directly rather than via paras.
+  const ctaAnchor = block.querySelector('a');
+  const textParas = [...block.querySelectorAll('p')].filter((p) => !p.querySelector('a'));
   const [eyebrow, subhead] = textParas;
 
   const overlay = document.createElement('div');
@@ -32,9 +33,11 @@ export default function decorate(block) {
     subhead.classList.add('hero-subhead');
     overlay.append(subhead);
   }
-  if (ctaPara) {
-    ctaPara.classList.add('hero-cta-row');
-    overlay.append(ctaPara);
+  if (ctaAnchor) {
+    const ctaRow = document.createElement('p');
+    ctaRow.className = 'hero-cta-row';
+    ctaRow.append(ctaAnchor.closest('strong, em, del') || ctaAnchor);
+    overlay.append(ctaRow);
   }
 
   const frag = document.createDocumentFragment();
